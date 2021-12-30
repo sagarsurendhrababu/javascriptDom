@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClassicSlider</title>
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box; list-style: none; text-decoration: none;}
+        body{background-color: black; font-family: Verdana, Geneva, Tahoma, sans-serif; color: #f2f2f2;}
+        h3{font-size: 2rem; font-weight: 300; margin-bottom: 2rem; color: #fff; text-align: center;}
+        p{color: #f1f1f1; margin-top: 2rem; text-align: center;}
+        .button{padding: .6rem; margin-left: 1rem; border-radius: .4rem; background-color: cornflowerblue; border:none; text-decoration: none; color: cornsilk;}
+        section{display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; width: 100%;}
+        .slider{overflow: hidden;}
+        .sliderWrapper{ width: 100%; height: 100%; display: flex;}
+        .sliderWrapper>li{width: 100%; height: 100%;}
+        .sliderWrapper>li>a{width: 100%; height: 100%; display: block;}
+        .sliderWrapper>li>a>img{height: 100%; object-fit: cover;}
+    </style>
+</head>
+<body>
+    <section>
+        <h3>Multi Classic Slider</h3>
+        <div class="slider">            
+            <ul class="sliderWrapper">
+                <li><a href=""><img src="../img/slider1.jpg" alt=""></a></li>
+                <li><a href=""><img src="../img/slider2.jpg" alt=""></a></li>
+                <li><a href=""><img src="../img/slider3.jpg" alt=""></a></li>
+                <li><a href=""><img src="../img/slider4.jpg" alt=""></a></li>                
+            </ul>
+        </div>
+        <p>This is Classic slider which is automaticaly slide along with controls <a href="/slider.html" download class="button">Free Download</a></p>
+    </section>
+    <script>
+
+        sliderObject = {
+            width :900,
+            height:400,
+            itemsNumbers:2,
+            itemSpace:1, //0 to 1 maximum
+            unit: "px", // Never use "%" value here
+            setTimer: 2000, // milliseconds            
+            itemsWidth: function(){
+                return this.width/this.itemsNumbers;
+            }
+        }
+
+
+        let slider = document.querySelector(".slider");
+        let sliderWrap = document.querySelector(".sliderWrapper");
+        let sliderWrapWidth = sliderWrap.clientWidth;   
+        let sliderItems = document.querySelectorAll(".sliderWrapper>li");     
+        let sliderItemsImg = document.querySelectorAll(".sliderWrapper>li>a>img");
+        let sliderItemsWidth = sliderObject.itemsWidth();
+
+        let num = 0;
+
+        //spacing declaration 
+        sliderItems.forEach(el => {
+            el.style.marginRight = `${sliderObject.itemSpace}em`;
+        });
+        //slider Image width declaration 
+        sliderItemsImg.forEach(el => {
+            el.style.width = sliderItemsWidth + sliderObject.unit;
+        });
+    
+        //slider width and height declaration
+        slider.style.width = sliderObject.width+ sliderObject.unit;
+        slider.style.height = sliderObject.height+ sliderObject.unit;
+
+        setInterval(() => {
+
+            if(num>sliderItemsImg.length-(sliderObject.itemsNumbers+1)){
+                num = 0;
+            }else{
+                num++;
+            }
+           sliderWrap.style.transform = `translateX(-${(sliderItemsWidth + (sliderObject.itemSpace * 16)) * num}${sliderObject.unit})`; 
+           
+           sliderWrap.style.transition = "all 1s ease"
+
+        },sliderObject.setTimer);
+        
+    </script>
+</body>
+</html>

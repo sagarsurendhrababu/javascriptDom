@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrolling</title>
+    <style>
+        *{margin: 0; padding: 0;}
+        html{scroll-behavior: smooth;}
+        .container{width: 100%; height: auto;}
+        .box{width: 100%; height: 100vh;}
+        .box:nth-child(1){background-color: burlywood;}
+        .box:nth-child(2){background-image: url(../img/slider1.jpg); background-size: cover;}
+        .box:nth-child(3){background-image:url(../img/slider2.jpg); background-size: cover;}
+
+        .moveRight{animation: moveMagic 1s ease-out;}
+        @keyframes moveMagic {
+            0%{transform: translateX(-100%);}
+            100%{transform: translateX(0%);}
+        }
+
+        .box:nth-child(4){background-color: yellowgreen;}
+
+        .sticky{position: sticky; top: 0; z-index: -1;}
+
+        .hero{width: 200px; height: 200px; background-color: tomato; z-index: 9; position: absolute; left: 45%;} 
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box"></div>
+        <div class="box targu first">
+            <div class="hero"></div>
+        </div>
+        <div class="box targu second">
+            <div class="hero"></div>
+        </div>
+        <div class="box"></div>
+    </div>
+    <script>
+        let targetEles = document.querySelectorAll(".targu");
+        let container = document.querySelector(".container");
+        let hero = document.querySelectorAll(".hero");
+
+        hero.forEach(el=>{
+            el.style.transition = "all 1s ease-out";
+            el.style.position = "relative";
+            el.style.left="-500px" 
+        });
+       
+        window.addEventListener("scroll", ()=>{
+          
+            targetEles.forEach( (el,index) => {
+
+                if(window.scrollY >= el.offsetTop/2 && window.scrollY <= (el.clientHeight + el.offsetTop)){
+                    let scrollPoint = window.scrollY - el.offsetTop;                    
+                    el.classList.add("sticky");
+                    hero[index].style.position = "relative";
+                    hero[index].style.left="500px";
+                    console.log(el.offsetTop);
+                }else{
+                    el.classList.remove("sticky");
+                    hero[index].style.position = "relative";
+                    hero[index].style.left="-500px";
+
+                }
+
+            });
+
+            
+
+        })
+    </script>
+</body>
+</html>

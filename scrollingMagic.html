@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollingMagic</title>
+    <style>
+        *{margin: 0; padding: 0; }
+        .container{width: 100%; height: 100%; overflow: hidden; scroll-behavior: smooth;}
+        section{width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center;}
+        section:nth-child(1){background-color: #000;}
+        section:nth-child(2){background-color:cadetblue;}
+        section:nth-child(3){background-color:coral;}
+        section:nth-child(4){background-color:darkgreen;}
+
+        .box{width: 100%; height: 100%; position: relative; }
+        .box img{width: 100%; height: 100%; object-fit:contain; position: absolute; transition: all 1s ease-out;} 
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="first">
+            <div class="box">
+                <img src="../img/SVG/Artboard 6.svg" alt="">
+                <img src="../img/SVG/Artboard 7.svg" alt="">
+                <img src="../img/SVG/Artboard 5.svg" alt="">
+                <img src="../img/SVG/Artboard 2.svg" alt="">
+                <img src="../img/SVG/Artboard 3.svg" alt="">
+                <img src="../img/SVG/Artboard 1.svg" alt="">
+                <img src="../img/SVG/Artboard 4.svg" alt="">
+            </div>
+        </section> 
+        <section class="second">2</section>
+        <section class="third">3</section>
+        <section class="fourth">4</section>
+    </div>
+
+    <script>
+        let container = document.querySelector(".container");
+        let box = document.querySelector(".box");
+        let first = document.querySelector(".first");
+        let second = document.querySelector(".second");
+        let third = document.querySelector(".third");
+        let fourth = document.querySelector(".fourth");
+        let imgs = document.querySelectorAll(".box img");
+        let currentPosition = first.getBoundingClientRect().bottom;
+
+        
+
+        window.addEventListener("scroll", () => {
+            let scrollCount = window.scrollY; 
+
+            first.style.position = "fixed";
+            //first.style.opacity = ".5";
+            
+            
+           fourth.style.position = "absolute";
+           fourth.style.top =  `${first.clientHeight*6}px`;            
+
+
+            if(scrollCount<first.clientHeight){
+                imgs[0].style.left = (scrollCount - first.offsetTop)+"px";           
+            }else{
+                imgs[0].style.left = first.clientHeight + "px";
+            }
+
+            if(scrollCount<first.clientHeight){
+                imgs[1].style.left = (scrollCount - first.offsetTop)+"px";           
+            }else{
+                imgs[1].style.left = first.clientHeight + "px";
+            }  
+            
+            if(scrollCount<first.clientHeight){
+                imgs[2].style.left = (scrollCount - first.offsetTop)*.5 +"px";           
+            }else{
+                imgs[2].style.left = first.clientHeight + "px";
+            } 
+            
+            if(scrollCount<first.clientHeight){
+                imgs[3].style.right = (scrollCount - first.offsetTop)+"px";           
+            }else{
+                imgs[3].style.right = first.clientHeight + "px";
+            } 
+            
+            if(scrollCount<first.clientHeight){
+                imgs[4].style.right = (scrollCount - first.offsetTop)+"px";           
+            }else{
+                imgs[4].style.right = first.clientHeight + "px";
+            }    
+            
+            if(scrollCount<first.clientHeight){
+                imgs[6].style.right = (scrollCount - first.offsetTop)*.5+"px";           
+            }else{
+                imgs[6].style.right = first.clientHeight + "px";
+            } 
+            
+            
+            // second section area
+             
+
+            second.style.top =  `${first.clientHeight*2}px`;
+
+            if(window.scrollY>=second.offsetTop){
+                second.style.position = "fixed";
+                second.style.top = `0px`;
+
+            }else{
+                second.style.position = "absolute";    
+            }  
+            
+            // third section area
+
+            third.style.top =  `${first.clientHeight*4}px`;
+
+            if(window.scrollY>=third.offsetTop){
+                third.style.position = "fixed";
+                third.style.top= "0px";
+
+            }else{
+                third.style.position = "absolute"; 
+                third.style.left = `-${third.clientWidth}px`;   
+                third.style.top = `${window.scrollY - third.offsetTop}px`;
+                third.style.left = `${window.scrollY - third.offsetLeft}px`;                
+            }            
+            
+        });
+
+    </script>
+</body>
+</html>

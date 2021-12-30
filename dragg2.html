@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragging Slider</title>
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box;}
+        body{display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #000;}
+        .sliderContainer{width: 900px; height: 400px; position: relative;}
+        .slider{width: 100%; height: 100%; position: relative; z-index: 1; overflow: hidden;}
+        .sliderWrapper{height: 100%; display: flex; position: absolute; top: 0; left: -648px; transition:left 500ms; pointer-events: none; scroll-behavior: smooth;}
+        .sliderWrapper>li{width:100%; height: 100%; display: flex; justify-content:center; align-items: center; background-color: #000; color: #fff;}
+        .sliderWrapper>li>img{object-fit: cover; width: 100%; height: 100%;}
+
+        .sliderbtn {width: 100%; height: 50px; position: absolute; bottom:-50px; left: 0; display: flex; z-index:5; justify-content:flex-start; flex-direction: row-reverse; padding-right: 10px; padding-top: 5px;}
+        .sliderbtn img{width: 90%; height: 90%;}
+        .nextBtn{width: 50px; margin: 2px; height: 50px; border-radius: 50%; background-color: teal; text-align: center; line-height: 50px; color: #fff; display: flex; justify-content: center; align-items: center;}
+        .preBtn{width: 50px; margin: 2px; height: 50px; border-radius: 50%; background-color: teal; text-align: center; line-height: 50px; color: #fff; display: flex; justify-content: center; align-items: center;}        
+        
+        /* ipad screen */
+        @media screen and (max-width:900px) {
+            .container{width:700px;}
+        }        
+        
+        /* mobile screen */
+        @media screen and (max-width: 420px) {
+          .container{width:300px;}
+        }
+    </style>
+</head>
+<body>
+    <div class="sliderContainer">
+        <div class="sliderbtn">
+            <div class="nextBtn"><img src="../img/chevron-right-solid.svg" alt=""></div>
+            <div class="preBtn"><img src="../img/chevron-left-solid.svg" alt=""></div>
+        </div>        
+        <div class="slider">              
+            <ul class="sliderWrapper">
+                <li><img src="../img/slider1.jpg" alt=""></li>
+                <li><img src="../img/slider2.jpg" alt=""></li>
+                <li><img src="../img/slider3.jpg" alt=""></li>
+                <li><img src="../img/slider4.jpg" alt=""></li>
+                <li><img src="../img/slider1.jpg" alt=""></li>
+                <li><img src="../img/slider2.jpg" alt=""></li>
+                <li><img src="../img/slider3.jpg" alt=""></li>
+                <li><img src="../img/slider4.jpg" alt=""></li>                
+            </ul>
+        </div>
+    </div>
+    <script>
+
+        let slider = document.querySelector(".slider");
+        let Items = document.querySelectorAll(".sliderWrapper>li");
+        let sliderWrapper = document.querySelector(".sliderWrapper");
+
+        let nextBtn = document.querySelector(".nextBtn");
+        let preBtn = document.querySelector(".preBtn");
+
+        let pressed = false;
+        let startX;
+        
+        sliderWrapper.style.width = (slider.clientWidth*Items.length)+"px";
+        sliderWrapper.style.left = "0px";
+
+        slider.addEventListener("mouseenter", el => {
+            slider.style.cursor = "grab";
+            pressed = false;             
+        });
+
+        slider.addEventListener("mousedown", el => {
+            slider.style.cursor = "grabbing";
+            pressed = true;
+            startX = el.offsetX - sliderWrapper.offsetLeft;       
+        });  
+ 
+
+        slider.addEventListener("mousemove", el => { 
+            if(!pressed) return;
+            el.preventDefault();
+            let scrollingX = el.offsetX;
+            sliderWrapper.style.left = `${scrollingX - startX}px`;
+            checkboundary()
+        });     
+        
+        slider.addEventListener("mouseup", el => {
+            slider.style.cursor = "grab";
+            pressed = false;
+        }); 
+
+        nextBtn.addEventListener("click", function() {
+            Items.forEach(el =>{
+                sliderWrapper.style.left = "-"+ (el.clientWidth - sliderWrapper.offsetLeft) +"px";               
+            });
+            checkboundary();            
+        });
+
+        preBtn.addEventListener("click", function() {
+            Items.forEach(el =>{
+                sliderWrapper.style.left = (sliderWrapper.offsetLeft + el.clientWidth) +"px";
+            });
+            checkboundary();
+        });         
+              
+        function checkboundary(){
+            let outer = slider.getBoundingClientRect();
+            let inner = sliderWrapper.getBoundingClientRect();
+
+            if(parseInt(sliderWrapper.style.left)>0){
+                sliderWrapper.style.left='0px';
+            }else if (inner.right < outer.right){
+                sliderWrapper.style.left=`-${inner.width - outer.width}px`;
+            }
+        } 
+        
+       
+    </script>
+</body>
+</html>

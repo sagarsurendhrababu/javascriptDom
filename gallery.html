@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box;}
+        body{background-color: #000;}
+        .gallery{display: grid; grid-template-columns: repeat(3,1fr); grid-template-rows: auto; gap: 1rem; position: relative;}
+        .gallery>li{width: 100%; height: 100%; overflow: hidden;}
+        .gallery img{width: 100%; height: 100%; object-fit: cover; transition: all 500ms ease-out;}
+        .gallery img:hover{transform: scale(1.1); cursor: pointer;}
+
+        .imageDisplay{width: 100%; height: 100%; background-color: rgba(0,0,0,.8); z-index: 1; position: absolute; top: 0; left: 0; }
+        .imageView{width: 50%; padding:2rem; background-color: #ffff; border-radius: 1rem; position: relative; margin: 0 auto; margin-top:10%;}
+        .imgcloseBtn{ height: 30px; position: absolute; right: 30px; top: 10px; cursor: pointer; font-family: Verdana, Geneva, Tahoma, sans-serif; font-weight: bold; font-size: 1rem;}
+        .imgcloseBtn:hover{color: firebrick;}
+
+        .sliderBtns{height: 50px; display: flex; justify-content: space-between; position: absolute; top: 45%; list-style: none;}
+        .sliderBtns li{cursor: pointer; font-size: 1rem; font-weight: 400; padding:1.5rem; font-family: Verdana, Geneva, Tahoma, sans-serif; display: flex; justify-content: center; align-items: center;}
+        .sliderBtns>li:nth-child(1){width: 30px; height: 30px; background-color: #000; color: #fff;}
+        .sliderBtns>li:nth-child(2){width: 30px; height: 30px; background-color: #000; color: #fff;}
+    </style>
+</head>
+<body>
+    <ul class="gallery">
+        <li><img src="../img/slider1.jpg" alt="Palakkad"></li>
+        <li><img src="../img/slider2.jpg" alt="Ernakulam"></li>
+        <li><img src="../img/slider3.jpg" alt="Kochi"></li>
+        <li><img src="../img/slider4.jpg" alt="kannur"></li>
+        <li><img src="../img/slider1.jpg" alt="Kozhikode"></li>
+        <li><img src="../img/slider2.jpg" alt="Alapuzha"></li>
+        <li><img src="../img/slider3.jpg" alt="Kasarkode"></li>
+        <li><img src="../img/slider4.jpg" alt="Vayanad"></li>
+        <li><img src="../img/slider1.jpg" alt="Thalassery"></li>
+        <li><img src="../img/slider2.jpg" alt="Pathanamthitta"></li>
+        <li><img src="../img/slider3.jpg" alt="Kollam"></li>
+        <li><img src="../img/slider4.jpg" alt="Thiruvanadapuram"></li>        
+    </ul>
+</body>
+<script>
+    let gallery = document.querySelector(".gallery");
+    let galleryItems = document.querySelectorAll(".gallery li");
+    
+
+    galleryItems.forEach(el => {
+        el.addEventListener("click", () => {
+            //Scroll top section
+            window.scrollTo(0, 0); 
+
+           let imageDisplay = document.createElement("div");
+           gallery.append(imageDisplay);
+           imageDisplay.classList.add("imageDisplay");
+           let imageView = document.createElement("div");
+           let parentDiv = document.querySelector(".imageDisplay");
+           parentDiv.append(imageView);
+           imageView.classList.add("imageView");
+           let imageSrc = document.createElement("IMG");
+           imageView.append(imageSrc);
+
+            let getImagePath = el.firstChild;
+            let path = getImagePath.getAttribute("src");           
+            imageSrc.setAttribute("src",path);
+            imageSrc.style.transform = "scale(1)";
+            // Close Button element
+           let closeBtn = document.createElement("div");
+           closeBtn.classList.add("imgcloseBtn");
+           closeBtn.innerHTML = "close X"; 
+           imageView.append(closeBtn);
+            // Control Button element
+           let controlBtn = document.createElement("UL");
+           controlBtn.classList.add("sliderBtns");
+           controlBtn.style.width = imageSrc.clientWidth+"px";
+           
+
+           for(i=0; i<2; i++){
+                let Btns = document.createElement("LI");
+                controlBtn.append(Btns);
+           }  
+
+           imageView.append(controlBtn); 
+           let titleName = document.createElement("H3");
+           imageView.append(titleName);
+            //Slider Name declare area    
+           let imageName = el.querySelector("IMG").getAttribute("alt");
+           titleName.innerHTML = imageName;
+
+           let ctrlBtns = document.querySelectorAll(".sliderBtns li");
+           ctrlBtns[0].innerHTML = "Prev";          
+           ctrlBtns[1].innerHTML = "Next";           
+
+           const imageCollections = [];
+            galleryItems.forEach(eles => {
+                imageCollections.push(eles);
+            }); 
+            let id = imageCollections.indexOf(el);
+
+           //control button previous button 
+           ctrlBtns[0].addEventListener("click", () =>{ 
+            
+            if(id<1){
+               id=imageCollections.length-1;
+           }else{
+               id--;
+               let getItem = imageCollections[id];
+               let getPath = getItem.querySelector("IMG").getAttribute("src");
+               imageSrc.setAttribute("src",getPath); 
+                //Title Name declare
+               let imageName = getItem.querySelector("IMG").getAttribute("alt");
+               titleName.innerHTML = imageName               
+           }
+            
+           });
+           //control button next button
+           ctrlBtns[1].addEventListener("click", () =>{
+           
+           if(id>=imageCollections.length-1){
+               id=0;
+           }else{
+               id++;
+               let getItem = imageCollections[id];
+               let getPath = getItem.querySelector("IMG").getAttribute("src");
+               imageSrc.setAttribute("src",getPath);
+               //Title Name declare
+               let imageName = getItem.querySelector("IMG").getAttribute("alt");
+               titleName.innerHTML = imageName
+           }
+           });
+
+           closeBtn.addEventListener("click", ()=> {
+                parentDiv.remove();
+           });
+
+        });
+    });
+
+</script>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider</title>
+    <style>
+        :root{
+            --width:900px;
+        }
+        *{margin: 0; padding: 0; box-sizing: border-box; list-style: none; font-family: Verdana, Geneva, Tahoma, sans-serif;}
+        body{background-color: #000;}
+        .button{padding: .6rem; margin-left: 1rem; border-radius: .4rem; background-color: cornflowerblue; border:none; text-decoration: none; color: cornsilk;}
+        h3{font-size: 2rem; font-weight: 300; margin-bottom: 2rem; color: #fff; text-align: center;}
+        p{color: #f1f1f1; margin-top: 2rem; text-align: center;}
+        .container{ display: flex; justify-content: center; width: 100%; height: 100vh;}
+        section{width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; flex-direction: column;}
+        .slider{height: 100%; overflow: hidden;}
+        .sliderwrapper{ display: flex; width: 100%; height: 100%; flex-wrap: nowrap; }
+        .sliderwrapper li{width: 100%;}
+        .sliderwrapper img{height: 100%; background-size: cover;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section>
+            <h3>Nano Slider</h3>
+            <div class="slider">
+                <ul class="sliderwrapper">
+                    <li><a href="#"><img src="../img/slider1.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="../img/slider2.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="../img/slider3.jpg" alt=""></a></li>
+                    <li><a href="#"><img src="../img/slider4.jpg" alt=""></a></li>
+                </ul>
+            </div>
+            <p>This is simple slider which is automaticaly slide from right to left <a href="/slider.html" download class="button">Free Download</a></p>
+        </section>
+    </div>
+
+    <script>
+        const sliderObj = {
+            speed : 1,
+            timerSet: 2000,
+            sliderWidth:50,
+            sliderHeight:20,
+            unit:"rem" //Never use "%" over here
+        }
+
+        let slider = document.querySelector(".slider");
+        let sliders = document.querySelectorAll(".sliderwrapper li");
+        let sliderWrapper = document.querySelector(".sliderwrapper");
+        let sliderImg = document.querySelectorAll(".sliderwrapper img");
+                    
+        sliderWrapper.style.transition = "all "+sliderObj.speed+"s ease";
+        
+        slider.style.width = sliderObj.sliderWidth+sliderObj.unit;
+        slider.style.height = sliderObj.sliderHeight+sliderObj.unit;
+        
+        sliderImg.forEach(el => {
+            el.style.width = sliderObj.sliderWidth+sliderObj.unit;
+        })
+
+        let num = 0; 
+
+        setInterval(() => {            
+            if(num>sliders.length-1){
+                num=0;
+            }else{
+                num++;
+            }
+            console.log(num)
+            sliderWrapper.style.transform = "translateX(-"+ (sliderObj.sliderWidth*(num-1))+sliderObj.unit+")";  
+                                 
+        }, sliderObj.timerSet);
+
+    </script>
+</body>
+</html>

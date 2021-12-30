@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor Eye</title>
+    <style>
+        *{margin: 0; padding: 0; box-sizing: border-box;}
+        body{background-color: #00cbee; height: 100vh; display: flex; justify-content: center; align-items: center;}
+        .move-area{/*normally use body*/
+        width: 300px;
+        height: 366px;
+        background-image: url(../img/kitten.png);
+        background-repeat: no-repeat;        
+        }
+        .eyeArea{margin-top: 40%; width:120px; margin-left:22%; display: flex; justify-content: space-between;}
+        .eye {
+        display: inline-block;
+        border-radius: 50%;
+        height: 40px;
+        width: 35px;
+        }
+        .eye:after { /*pupil*/
+        position: absolute;
+        bottom: 17px;
+        right: 10px;
+        width: 22px;
+        height: 22px;
+        background: #000;
+        border-radius: 50%;
+        content: " ";
+        }
+    </style>    
+</head>
+<body>
+    <section class="move-area">
+        <div class="eyeArea">
+            <div class='eye'></div>
+            <div class='eye'></div>
+        </div>
+    </section>   
+</body>
+    <script>
+
+        let body = document.querySelector("body");
+
+        body.addEventListener("mousemove", el => {
+            let eye = document.querySelectorAll(".eye");
+            console.log(el.pageX);
+            eye.forEach(e => {                
+                let x = (e.offsetLeft + e.clientWidth);
+                let y = (e.offsetTop + e.clientWidth);
+               // console.log(e.offsetLeft);
+                let rad = Math.atan2(event.pageX - x, event.pageY - y);                
+                let rot  = (rad*(180/Math.PI)*-1) + 180;
+                e.style.transform = 'rotate(' + rot + 'deg)';
+            });
+        });
+
+    </script>
+</html>
